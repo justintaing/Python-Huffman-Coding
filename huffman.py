@@ -105,6 +105,11 @@ class HuffmanCode(object):
 
         return "".join(encoded_string)
 
+    def encode_to_hex(self, string):
+        encoded = '1' + self.encode(string)
+
+        return hex(int(encoded, 2))
+
     def decode(self, path):
         traversal_node = self._root
         decoded_string = ""
@@ -130,3 +135,9 @@ class HuffmanCode(object):
             print("Incomplete or malformed code phrase")
 
         return decoded_string
+
+    def decode_hex(self, num):
+        path = bin(int(num, 16))[2:]
+        path = path[1:]
+
+        return self.decode(path)
