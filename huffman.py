@@ -106,6 +106,9 @@ class HuffmanCode(object):
         return "".join(encoded_string)
 
     def encode_to_hex(self, string):
+        # Insert extra '1' bit; prevents a stream of 0s from being truncated
+        # when going from bin -> int -> bin again; this extra bit is thrown
+        # out when we decode from hex anyways
         encoded = '1' + self.encode(string)
 
         return hex(int(encoded, 2))
@@ -137,7 +140,8 @@ class HuffmanCode(object):
         return decoded_string
 
     def decode_hex(self, num):
-        path = bin(int(num, 16))[2:]
-        path = path[1:]
+        # Throw out 0b and the extra bit we appended when we encoded
+        # the message to hex
+        path = bin(int(num, 16))[3:]
 
         return self.decode(path)
